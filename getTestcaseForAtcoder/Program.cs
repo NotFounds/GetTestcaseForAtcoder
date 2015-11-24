@@ -23,7 +23,7 @@ namespace getTestcaseForAtcoder
 
         static string getTestCase(string html)
         {
-            string anchor = "<pre class=\"prettyprint linenums\">(?<testcase>.*?)</pre>";
+            string anchor = "(<pre class=\"prettyprint linenums\">|<pre>)(?<testcase>.*?)</pre>";
 
             Regex re = new Regex(anchor, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
@@ -41,6 +41,8 @@ namespace getTestcaseForAtcoder
             int i = 1;
             for (Match m = re.Match(html); m.Success; m = m.NextMatch(), i++)
             {
+                if (m.Groups["testcase"].Value.Contains("<var>")) continue;
+
                 string testCase1 = m.Groups["testcase"].Value; m = m.NextMatch();
                 string testCase2 = m.Groups["testcase"].Value;
 
